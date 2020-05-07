@@ -1,6 +1,14 @@
-from summariser.rouge.rouge import Rouge
+from rouge.rouge import Rouge
 from resources import *
 from collections import OrderedDict
+
+def add_result(all_dic,result):
+    for metric in result:
+        if metric in all_dic:
+            all_dic[metric].append(result[metric])
+        else:
+            all_dic[metric] = [result[metric]]
+
 
 def evaluate_summary_rouge(cand,model,len=100):
     rouge_scorer = Rouge(ROUGE_DIR,BASE_DIR,True)

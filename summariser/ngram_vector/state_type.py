@@ -1,6 +1,5 @@
 from nltk.stem.snowball import SnowballStemmer
 from nltk.corpus import stopwords
-from summariser.rouge.rouge import Rouge
 import utils.data_helpers as util
 import numpy as np
 import operator as op
@@ -191,53 +190,6 @@ class State:
                 print('overlength! should not happen')
                 return -1
         return 0
-
-    def getOptimalTerminalRougeScores(self, model):
-        if len(self.draft_summary_list) == 0:
-            return 0.
-
-        rouge = Rouge(ROUGE_DIR, BASE_DIR, True, True)
-        R1, R2, R3, R4, RL, RSU = rouge(' '.join(self.draft_summary_list), [model], self.sum_token_length)
-        rouge.clean()
-        return [R1, R2, R3, R4, RL, RSU]
-
-    def getTerminalReward(self, sentences, sentences_stemmed_aggreate, sent2tokens, sim_scores,length_check=True):
-        if length_check:
-            assert self.draft_summary_length <= self.sum_token_length
-        # print('summary: \n'+' ||| '.join(self.draft_summary_list))
-        relatedness_score = 0
-        redundant_score = 0
-        for i in range(len(self.historical_actions)):
-            sent_idx = self.historical_actions[i]
-
-            # compute relatedness scores
-            # the original version used in the japan version
-            # -1 stands for full docs
-            if (sent_idx, -1) in sim_scores:
-                relatedness_score += sim_scores[(sent_idx, -1)]
-            elif (-1, sent_idx) in sim_scores:
-                relatedness_score += sim_scores[(-1, sent_idx)]
-            else:
-                sim_score = self.getSimilarity(' '.join(sent2tokens(self.draft_summary_list[i])),
-                                               sentences_stemmed_aggreate, True) + 1.0 / sentences[sent_idx].position
-                relatedness_score += sim_score
-                sim_scores[(sent_idx, -1)] = sim_score
-
-            # compute redundancy scores
-            for j in range(i):
-                idx2 = self.historical_actions[j]
-                if (sent_idx, idx2) in sim_scores:
-                    redundant_score += sim_scores[(sent_idx, idx2)]
-                elif (idx2, sent_idx) in sim_scores:
-                    redundant_score += sim_scores[(idx2, sent_idx)]
-                else:
-                    red_score = self.getSimilarity(' '.join(sent2tokens(self.draft_summary_list[j])),
-                                                   ' '.join(sent2tokens(self.draft_summary_list[i])))
-                    redundant_score += red_score
-                    sim_scores[(sent_idx, idx2)] = red_score
-
-        return relatedness_score*self.reward_lambda-(1-self.reward_lambda)*redundant_score
-
 
 class StateLengthComputer():
     def __init__(self, block_num, base_length, sent_num):

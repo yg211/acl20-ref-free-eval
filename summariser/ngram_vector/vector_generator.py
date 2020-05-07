@@ -1,6 +1,7 @@
 from nltk.stem.porter import PorterStemmer
 from nltk.tokenize import word_tokenize
 import random
+from tqdm import tqdm
 
 from summariser.ngram_vector.base import Sentence
 from summariser.ngram_vector.state_type import *
@@ -29,7 +30,7 @@ class Vectoriser:
     def sample_random_summaries(self,num):
         act_list = []
 
-        for ii in range(num):
+        for ii in tqdm(range(num), desc='generating samples for memory replay'):
             state = State(self.sum_token_length, self.base_length, len(self.sentences),self.block_num, self.language)
             while state.available_sents != [0]:
                 new_id = random.choice(state.available_sents)

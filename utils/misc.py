@@ -3,14 +3,6 @@ import random
 import math
 import scipy as sp
 
-def addResult(all_dic,result):
-    for metric in result:
-        if metric in all_dic:
-            all_dic[metric].append(result[metric])
-        else:
-            all_dic[metric] = [result[metric]]
-
-
 def normaliseList(ll,max_value=10.):
     minv = min(ll)
     maxv = max(ll)

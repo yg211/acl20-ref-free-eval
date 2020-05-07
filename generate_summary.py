@@ -7,12 +7,11 @@ from ref_free_metrics.sbert_score_metrics import get_rewards
 from summariser.ngram_vector.vector_generator import Vectoriser
 from summariser.deep_td import DeepTDAgent as RLAgent
 from utils.data_reader import CorpusReader
-from utils.evaluator import evaluate_summary_rouge
-from resources import BASE_DIR, FEATURE_DIR
+from utils.evaluator import evaluate_summary_rouge, add_result
 
 
 class RLSummarizer():
-    def __init__(self,reward_type='top10-sbert-f1',reward_strict=5.,rl_strict=5.,train_episode=5000, base_length=200, sample_summ_num=50):
+    def __init__(self,reward_type='top10-sbert-f1',reward_strict=5.,rl_strict=5.,train_episode=10000, base_length=200, sample_summ_num=10000):
         self.reward_strict = reward_strict
         self.rl_strict = rl_strict
         self.reward_type = reward_type
@@ -38,11 +37,22 @@ class RLSummarizer():
 
 if __name__ == '__main__':
     # read source documents
-    reader = CorpusReader(BASE_DIR)
-    source_docs = reader('data/topic_1/input_docs')
+    reader = CorpusReader('data/topic_1')
+    source_docs = reader()
 
     # generate summaries, with summary max length 100 tokens
     rl_summarizer = RLSummarizer()
     summary = rl_summarizer.summarize(source_docs, summ_max_len=100)
+    print('\n=====Generated Summary=====')
     print(summary)
+
+    # (Optional) Evaluate the quality of the summary using ROUGE metrics
+    refs = reader.readReferences() # make sure you have put the references in data/topic_1/references
+    avg_rouge_score = {}
+    for ref in refs:
+        rouge_scores = evaluate_summary_rouge(summary, ref)
+        add_result(avg_rouge_score, rouge_scores)
+    print('\n=====ROUGE scores against {} references====='.format(len(refs)))
+    for metric in avg_rouge_score:
+        print('{}:\t{}'.format(metric, np.mean(rouge_scores[metric])))
 
