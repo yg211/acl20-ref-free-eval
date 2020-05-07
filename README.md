@@ -16,7 +16,7 @@ This project includes the source code for ACL-2020 paper xxx.
 to train a RL-based summarizer. 
 ```python
 # read source documents
-reader = CorpusReader(BASE_DIR)
+reader = CorpusReader()
 source_docs = reader('data/topic_1/input_docs')
 
 # generate summaries, with summary max length 100 tokens
