@@ -1,11 +1,18 @@
 # SUPERT: Unsupervised Summarization Evaluation & Generation
 
-This project includes the source code for ACL-2020 paper xxx. 
+This project includes the source code for the paper **SUPERT: Towards New Frontiers in Unsupervised Evaluation Metrics forMulti-Document Summarization**, to appear at ACL 2020.
 
 **Highlighted Features**
 
 * *Unsupervised evaluation metrics*: Measure multi-document summaries without using human-written reference summaries
 * *Unsupervised multi-document summarizer*: Using the unsupervised evaluation metrics as **rewards** to guide a **neural reinforcement learning** based summarizer to generate summaries.
+
+
+Contact person: Yang Gao, yang.gao@rhul.ac.uk
+
+https://sites.google.com/site/yanggaoalex/home
+
+Don't hesitate to send us an e-mail or report an issue, if something is broken or if you have further questions
 
 ## Example Use Cases
 
@@ -73,7 +80,10 @@ are most likely to be different.
 ```shell script
 pip3 install -r requirements.txt
 ```
-* Download ROUGE package from the [link](https://www.isi.edu/licensed-sw/see/rouge/) and place it in the rouge directory
+* (Optional, if you want to run ROUGE) Download ROUGE package from the [link](https://www.isi.edu/licensed-sw/see/rouge/) and place it in the rouge directory
+```shell script
+mv RELEASE-1.5.5 rouge/
+```
 
-        >> mv RELEASE-1.5.5 rouge/
-
+## License
+Apache License Version 2.0
