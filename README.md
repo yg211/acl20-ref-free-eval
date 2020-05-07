@@ -9,7 +9,23 @@ This project includes the source code for ACL-2020 paper xxx.
 
 ## Example Use Cases
 
-<!--- ### Evaluate Summaries --->
+### Evaluate Summaries
+Given the source documents and some to-be-evaluated summaries, you can produce the unsupervised metrics for the summaries with a few line of codes:
+
+```python
+from ref_free_metrics.sbert_score_metrics import get_sbert_score_metrics
+from utils.data_reader import CorpusReader
+
+reader = CorpusReader('data/topic_1')
+source_docs = reader()
+summaries = reader.readSummaries() 
+scores = get_sbert_score_metrics(source_docs, summaries, pseudo_ref='top15')
+# output scores: [0.47249420469344194, 0.3846229787455767, 0.4947284578016637, 0.5013696306058708, 0.5108337611651548] 
+```
+In the example above, it extracts the top-15 sentences from each source document
+to build the *pseudo reference summaries*, and rate the summaries
+by measuring their semantic similarity with the pseudo references.
+*generate_summary.py* provides a working example.
 
 ### Generate Summaries
 *generate_summary.py* provides an example for using the unsupervised metric as rewarads

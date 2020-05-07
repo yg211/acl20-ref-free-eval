@@ -23,7 +23,7 @@ class CorpusReader:
             if tt[0] == '.':
                 continue # skip hidden files
             text = open(os.path.join(summary_path,tt), 'r').read()
-            summaries.append( (os.path.join(summary_path,tt), sent_tokenize(text)) ) 
+            summaries.append( text ) 
         return summaries
 
     def readReferences(self):
