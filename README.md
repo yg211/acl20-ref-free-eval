@@ -1,6 +1,6 @@
-# SUPERT: Unsupervised Summarization Evaluation & Generation
+# SUPERT: Unsupervised Multi-Document Summarization Evaluation & Generation
 
-This project includes the source code for the paper **SUPERT: Towards New Frontiers in Unsupervised Evaluation Metrics forMulti-Document Summarization**, to appear at ACL 2020.
+This project includes the source code for the paper **SUPERT: Towards New Frontiers in Unsupervised Evaluation Metrics for Multi-Document Summarization**, to appear at ACL 2020.
 
 **Highlighted Features**
 
@@ -34,7 +34,7 @@ to build the *pseudo reference summaries*, and rate the summaries
 by measuring their semantic similarity with the pseudo references.
 
 ### Generate Summaries (*generate_summary.py*) 
-You can also use the unsupervised metrics as rewards to train a RL-based summarizers to generate summaries:
+You can also use the unsupervised metrics as rewards to train a RL-based summarizer to generate summaries:
 
 ```python
 # read source documents
@@ -56,7 +56,7 @@ refs = reader.readReferences()
 for ref in refs:
     rouge_scores = evaluate_summary_rouge(summary, ref)
 ```
-
+<!--
 With the provided sample data (located at *data/topic_1*), the generated summary is 
 
 ```
@@ -71,11 +71,10 @@ ROUGE-SU4:	0.15251
 ```
 Please note that, due the to stochastic nature of RL, the generated summaries at different runs 
 are most likely to be different.
+-->
 
-
-
-## Prerequisites
-* Python 3.6 or higher versions
+## How to Set Up 
+* Prerequisite: Python 3.6 or higher versions
 * Install all packages in requirement.txt.
 ```shell script
 pip3 install -r requirements.txt
