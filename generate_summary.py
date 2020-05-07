@@ -11,7 +11,7 @@ from utils.evaluator import evaluate_summary_rouge, add_result
 
 
 class RLSummarizer():
-    def __init__(self,reward_type='top10-sbert-f1',reward_strict=5.,rl_strict=5.,train_episode=10000, base_length=200, sample_summ_num=10000):
+    def __init__(self,reward_type='top10-sbert-f1',reward_strict=5.,rl_strict=5.,train_episode=5000, base_length=200, sample_summ_num=5000):
         self.reward_strict = reward_strict
         self.rl_strict = rl_strict
         self.reward_type = reward_type

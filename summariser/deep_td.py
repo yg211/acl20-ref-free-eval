@@ -6,7 +6,7 @@ sys.path.append(os.path.abspath('./'))
 
 from summariser.ngram_vector.state_type import State
 #from summariser.utils.summary_samples_reader import *
-from utils.misc import softmax_sample
+from utils.misc import softmax_sample, normaliseList
 from summariser.ngram_vector.vector_generator import Vectoriser
 
 import numpy as np
@@ -39,9 +39,11 @@ class DeepTDAgent:
         self.hidden_layer_width = int(self.vectoriser.vec_length/2)
 
 
-    def __call__(self,reward_list):
+    def __call__(self,reward_list,normalise=True):
         self.softmax_list = []
-        summary = self.trainModel(self.summaries, reward_list)
+        if normalise: rewards = normaliseList(reward_list)
+        else: rewards = reward_list
+        summary = self.trainModel(self.summaries, rewards)
         return summary
 
 
