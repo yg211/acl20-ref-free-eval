@@ -38,14 +38,14 @@ for ref in refs:
 With the provided sample data (located at *data/topic_1*), the generated summary is 
 
 ```
-A ``deranged'' man abandoned his SUV on railroad tracks when he aborted a suicide attempt, authorities said, and then watched as a Metrolink commuter train slammed into it, setting off a spectacular three-train collision that left at 11 least dead and more than 180 injured Wednesday. A southbound commuter train from Ventura County struck the Jeep at about 6 a.m. local time and caromed into a stationary freight train locomotive before colliding with a northbound commuter train from Union Station in downtown Los Angeles. Eleven people died and about 180 were injured in the crash at 6:02 a.m. Wednesday.
+A man intent on committing suicide left his car on a railroad track in Glendale near downtown Los Angeles Wednesday, where it set off a collision that derailed two commuter trains, killing at least 10 people and injuring nearly 200, authorities said. One of the stricken trains then side-swiped a stationary freight train that was parked on a side-track in the area, knocking it over, officials said. Authorities believe Juan Manuel Alvarez drove his Jeep Grand Cherokee around the rail crossing barrier and onto the Metrolink train tracks at Chevy Chase Drive in Glendale about 6 a.m. Wednesday
 ```
 And its ROUGE scores against the golden references are:
 ```
-ROUGE-1:	0.39
-ROUGE-2:	0.0303
-ROUGE-L:	0.19
-ROUGE-SU4:	0.11428
+ROUGE-1:	0.42
+ROUGE-2:	0.09091
+ROUGE-L:	0.22
+ROUGE-SU4:	0.15251
 ```
 Please note that, due the to stochastic nature of RL, the generated summaries at different runs 
 are most likely to be different.
