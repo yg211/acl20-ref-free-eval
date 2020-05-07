@@ -9,8 +9,8 @@ This project includes the source code for ACL-2020 paper xxx.
 
 ## Example Use Cases
 
-### Evaluate Summaries
-Given the source documents and some to-be-evaluated summaries, you can produce the unsupervised metrics for the summaries with a few line of codes:
+### Evaluate Summaries (*evaluate_summary.py*)
+Given the source documents and some to-be-evaluated summaries, you can produce the unsupervised metrics for the summaries with a few lines of code:
 
 ```python
 from ref_free_metrics.sbert_score_metrics import get_sbert_score_metrics
@@ -25,11 +25,10 @@ scores = get_sbert_score_metrics(source_docs, summaries, pseudo_ref='top15')
 In the example above, it extracts the top-15 sentences from each source document
 to build the *pseudo reference summaries*, and rate the summaries
 by measuring their semantic similarity with the pseudo references.
-*generate_summary.py* provides a working example.
 
-### Generate Summaries
-*generate_summary.py* provides an example for using the unsupervised metric as rewarads
-to train a RL-based summarizer. 
+### Generate Summaries (*generate_summary.py*) 
+You can also use the unsupervised metrics as rewards to train a RL-based summarizers to generate summaries:
+
 ```python
 # read source documents
 reader = CorpusReader()
@@ -74,4 +73,7 @@ are most likely to be different.
 ```shell script
 pip3 install -r requirements.txt
 ```
+* Download ROUGE package from the [link](https://www.isi.edu/licensed-sw/see/rouge/) and place it in the rouge directory
+
+        >> mv RELEASE-1.5.5 rouge/
 
