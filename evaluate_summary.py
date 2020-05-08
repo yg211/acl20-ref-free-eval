@@ -20,24 +20,24 @@ if __name__ == '__main__':
     # get unsupervised metrics for the summaries
     if similarity_measurement.startswith('sbert_score'):
         scores = get_sbert_score_metrics(source_docs, summaries, pseudo_ref,mute=False)
+    print('unsupervised metrics\n', scores)
 
     # compare the summaries against golden refs using ROUGE
-    refs = reader.readReferences() # make sure you have put the references in data/topic_1/references
-    summ_rouge_scores = []
-    for summ in summaries:
-        rouge_scores = {}
-        for ref in refs:
-            rs = evaluate_summary_rouge(summ, ref)
-            add_result(rouge_scores, rs)
-        summ_rouge_scores.append(rouge_scores)
+    if os.path.isdir('./rouge/ROUGE-RELEASE-1.5.5'):
+        refs = reader.readReferences() # make sure you have put the references in data/topic_1/references
+        summ_rouge_scores = []
+        for summ in summaries:
+            rouge_scores = {}
+            for ref in refs:
+                rs = evaluate_summary_rouge(summ, ref)
+                add_result(rouge_scores, rs)
+            summ_rouge_scores.append(rouge_scores)
 
-    mm = 'ROUGE-1'
-    rouge_scores = []
-    for rs in summ_rouge_scores:
-        rouge_scores.append( np.mean(rs[mm]) )
-
-    print('unsupervised metrics\n', scores)
-    print('reference-based',mm,'\n',rouge_scores)
+        mm = 'ROUGE-1'
+        rouge_scores = []
+        for rs in summ_rouge_scores:
+            rouge_scores.append( np.mean(rs[mm]) )
+        print('reference-based',mm,'\n',rouge_scores)
 
 
 

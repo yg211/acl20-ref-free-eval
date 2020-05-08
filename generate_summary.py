@@ -47,12 +47,13 @@ if __name__ == '__main__':
     print(summary)
 
     # (Optional) Evaluate the quality of the summary using ROUGE metrics
-    refs = reader.readReferences() # make sure you have put the references in data/topic_1/references
-    avg_rouge_score = {}
-    for ref in refs:
-        rouge_scores = evaluate_summary_rouge(summary, ref)
-        add_result(avg_rouge_score, rouge_scores)
-    print('\n=====ROUGE scores against {} references====='.format(len(refs)))
-    for metric in avg_rouge_score:
-        print('{}:\t{}'.format(metric, np.mean(rouge_scores[metric])))
+    if os.path.isdir('./rouge/ROUGE-RELEASE-1.5.5'):
+        refs = reader.readReferences() # make sure you have put the references in data/topic_1/references
+        avg_rouge_score = {}
+        for ref in refs:
+            rouge_scores = evaluate_summary_rouge(summary, ref)
+            add_result(avg_rouge_score, rouge_scores)
+        print('\n=====ROUGE scores against {} references====='.format(len(refs)))
+        for metric in avg_rouge_score:
+            print('{}:\t{}'.format(metric, np.mean(rouge_scores[metric])))
 

@@ -27,7 +27,6 @@ reader = CorpusReader('data/topic_1')
 source_docs = reader()
 summaries = reader.readSummaries() 
 scores = get_sbert_score_metrics(source_docs, summaries, pseudo_ref='top15')
-# output scores: [0.47249420469344194, 0.3846229787455767, 0.4947284578016637, 0.5013696306058708, 0.5108337611651548] 
 ```
 In the example above, it extracts the top-15 sentences from each source document
 to build the *pseudo reference summaries*, and rate the summaries
