@@ -78,7 +78,7 @@ are most likely to be different.
 ```shell script
 pip3 install -r requirements.txt
 ```
-* (Optional, if you want to run ROUGE) Download ROUGE package from the [link](https://www.isi.edu/licensed-sw/see/rouge/) and place it in the rouge directory
+* (Optional, if you want to run ROUGE) Download ROUGE-1.5.5.zip from the [link](https://drive.google.com/file/d/1eq4WD1rsCzAFhKmgI8cSeGqHEYYIFhGJ/view?usp=sharing) and place extracted folder in the rouge directory
 ```shell script
 mv RELEASE-1.5.5 rouge/
 ```
