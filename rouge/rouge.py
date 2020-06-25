@@ -1,5 +1,6 @@
-from __future__  import  print_function
-import tempfile
+import sys
+sys.path.append('../')
+
 from os import path,makedirs,getcwd
 import time
 import os
@@ -7,6 +8,7 @@ from utils.writer import write_to_file
 from subprocess import check_output
 import re
 import shutil
+import random
 
 
 class Rouge(object):
@@ -14,7 +16,7 @@ class Rouge(object):
         self.ROUGE_DIR = rouge_dir
         self.reference_summary_temp_filename = "reference_summary.txt"
         config_file = "config.xml"
-        self.temp_dir = os.path.join(base_dir,'rouge_temp_files',tempfile.mkdtemp()+repr(time.time()))
+        self.temp_dir = os.path.join(base_dir,'rouge_temp_files',repr(random.random())[3:8]+'-'+repr(time.time()))
         self.temp_config_file = path.join(self.temp_dir, config_file)
         self.rouge_l = rouge_l
         self.verbose = verbose

@@ -146,8 +146,9 @@ def get_token_vecs(model,sents,remove_stopwords=True):
 
 
 
-def get_sbert_score_metrics(docs, summaries, ref_metric, sim_metric='f1', mute=True):
-    bert_model = SentenceTransformer('bert-large-nli-stsb-mean-tokens') 
+def get_sbert_score_metrics(docs, summaries, ref_metric, sim_metric='f1', bert_model=None):
+    if bert_model is None:
+        bert_model = SentenceTransformer('bert-large-nli-stsb-mean-tokens') 
     # word and sentence tokenization
     sent_info_dic, _, sents_weights = parse_documents(docs,None,ref_metric)
     all_token_vecs, all_tokens = get_all_token_vecs(bert_model, sent_info_dic)

@@ -19,10 +19,10 @@ if __name__ == '__main__':
 
     # get unsupervised metrics for the summaries
     if similarity_measurement.startswith('sbert_score'):
-        scores = get_sbert_score_metrics(source_docs, summaries, pseudo_ref,mute=False)
+        scores = get_sbert_score_metrics(source_docs, summaries, pseudo_ref)
     print('unsupervised metrics\n', scores)
 
-    # compare the summaries against golden refs using ROUGE
+    # (Optional) compare the summaries against golden refs using ROUGE
     if os.path.isdir('./rouge/ROUGE-RELEASE-1.5.5'):
         refs = reader.readReferences() # make sure you have put the references in data/topic_1/references
         summ_rouge_scores = []
