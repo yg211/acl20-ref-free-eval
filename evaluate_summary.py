@@ -3,14 +3,13 @@ sys.path.append('../')
 import numpy as np
 import os
 
-from ref_free_metrics.sbert_score_metrics import get_sbert_score_metrics
+from ref_free_metrics.supert import Supert
 from utils.data_reader import CorpusReader
 from utils.evaluator import evaluate_summary_rouge, add_result
 
 
 if __name__ == '__main__':
     pseudo_ref = 'top15' # pseudo-ref strategy
-    similarity_measurement = 'sbert_score' # measure similarity between summary and pseudo-ref
 
     # read source documents
     reader = CorpusReader('data/topic_1')
@@ -18,8 +17,8 @@ if __name__ == '__main__':
     summaries = reader.readSummaries()
 
     # get unsupervised metrics for the summaries
-    if similarity_measurement.startswith('sbert_score'):
-        scores = get_sbert_score_metrics(source_docs, summaries, pseudo_ref)
+    supert = Supert(source_docs) 
+    scores = supert(summaries)
     print('unsupervised metrics\n', scores)
 
     # (Optional) compare the summaries against golden refs using ROUGE

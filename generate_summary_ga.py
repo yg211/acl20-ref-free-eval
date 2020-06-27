@@ -7,7 +7,7 @@ import torch
 import copy
 import os
 
-from ref_free_metrics.sbert_score_metrics import get_sbert_score_metrics
+from ref_free_metrics.supert import Supert
 from utils.data_reader import CorpusReader
 from sentence_transformers import SentenceTransformer
 from utils.evaluator import evaluate_summary_rouge, add_result
@@ -20,7 +20,7 @@ class GeneticSearcher():
         self.max_sum_len = max_sum_len
         self.temperature = temperature
         self.mutation_rate = mutation_rate
-        self.bert_model = SentenceTransformer('bert-large-nli-stsb-mean-tokens') 
+        self.supert = Supert(docs)
 
     def load_data(self, docs):
         self.sentences = []
@@ -55,11 +55,7 @@ class GeneticSearcher():
         return pool    
             
     def get_fitness_scores(self, pool):
-        summaries = []
-        for pp in pool:
-            summary = ' '.join([self.sentences[i]['text'] for i in pp])
-            summaries.append(summary)
-        scores = get_sbert_score_metrics(self.docs, summaries, 'top10', bert_model=self.bert_model)
+        scores = self.supert(pool)
         return scores
         
     def reduce(self, new_pool, pool, new_scores, scores):
@@ -160,7 +156,7 @@ if __name__ == '__main__':
 
     # generate summaries, with summary max length 100 tokens
     summarizer = GeneticSearcher(source_docs, max_sum_len=100)
-    summary = summarizer.search(max_round=10, max_pop_size=100)
+    summary = summarizer.search(max_round=10, max_pop_size=500)
     print('\n=====Generated Summary=====')
     print(summary)
 

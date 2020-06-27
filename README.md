@@ -20,13 +20,17 @@ Don't hesitate to send us an e-mail or report an issue, if something is broken o
 Given the source documents and some to-be-evaluated summaries, you can produce the unsupervised metrics for the summaries with a few lines of code:
 
 ```python
-from ref_free_metrics.sbert_score_metrics import get_sbert_score_metrics
+from ref_free_metrics.supert import Supert
 from utils.data_reader import CorpusReader
 
+# read docs and summaries
 reader = CorpusReader('data/topic_1')
 source_docs = reader()
 summaries = reader.readSummaries() 
-scores = get_sbert_score_metrics(source_docs, summaries, pseudo_ref='top15')
+
+# compute the Supert scores
+supert = Supert(source_docs) 
+scores = supert(summaries)
 ```
 In the example above, it extracts the top-15 sentences from each source document
 to build the *pseudo reference summaries*, and rate the summaries
