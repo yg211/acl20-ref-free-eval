@@ -44,8 +44,9 @@ You can also use the unsupervised metrics as rewards to train a RL-based summari
 reader = CorpusReader()
 source_docs = reader('data/topic_1')
 
-# generate summaries, with summary max length 100 tokens
-rl_summarizer = RLSummarizer()
+# generate summaries using reinforcement learning, with supert as reward function
+supert = Supert(source_docs)
+rl_summarizer = RLSummarizer(reward_func = supert)
 summary = rl_summarizer.summarize(source_docs, summ_max_len=100)
 
 # print out the generated summary

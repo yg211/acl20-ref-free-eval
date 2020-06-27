@@ -14,13 +14,13 @@ from utils.evaluator import evaluate_summary_rouge, add_result
 
 
 class GeneticSearcher():
-    def __init__(self, docs, max_sum_len, temperature=0.2, mutation_rate=0.2):
+    def __init__(self, docs, max_sum_len, fitness_func, temperature=0.2, mutation_rate=0.2):
         self.docs = docs
         self.load_data(self.docs) 
         self.max_sum_len = max_sum_len
         self.temperature = temperature
         self.mutation_rate = mutation_rate
-        self.supert = Supert(docs)
+        self.fitness_func = fitness_func
 
     def load_data(self, docs):
         self.sentences = []
@@ -54,10 +54,6 @@ class GeneticSearcher():
             pool.append(entry)
         return pool    
             
-    def get_fitness_scores(self, pool):
-        scores = self.supert(pool)
-        return scores
-        
     def reduce(self, new_pool, pool, new_scores, scores):
         new_pool += pool
         new_scores += scores
@@ -91,7 +87,7 @@ class GeneticSearcher():
             new_f = pool[f][:cut_p] + pool[m][cut_p:]
             new_m = pool[m][:cut_p] + pool[f][cut_p:]
             new_pool += [new_f, new_m]
-        new_scores = self.get_fitness_scores(new_pool)
+        new_scores = self.fitness_func(new_pool)
         #print(np.unique(selected_parents, return_counts=True))
         return new_pool, new_scores
     
@@ -114,7 +110,7 @@ class GeneticSearcher():
            if summ_len > self.max_sum_len: break
            avai_sents = self.get_avai_sents(avai_sents, new_summary, summ_len)
         # compute score
-        new_score = self.get_fitness_scores([new_summary])[0]
+        new_score = self.fitness_func([new_summary])[0]
         return new_summary, new_score
 
 
@@ -138,7 +134,7 @@ class GeneticSearcher():
 
     def search(self, max_round, max_pop_size):
         pool = self.init_pool(max_pop_size)
-        scores = self.get_fitness_scores(pool)
+        scores = self.fitness_func(pool)
 
         for i in tqdm(range(max_round)):
             pool, scores = self.round_search(pool, scores)
@@ -154,8 +150,9 @@ if __name__ == '__main__':
     reader = CorpusReader('data/topic_1')
     source_docs = reader()
 
-    # generate summaries, with summary max length 100 tokens
-    summarizer = GeneticSearcher(source_docs, max_sum_len=100)
+    # generate summaries using genetic algorithm, with supert as fitness function
+    supert = Supert(source_docs)
+    summarizer = GeneticSearcher(source_docs, max_sum_len=100, fitness_func=supert)
     summary = summarizer.search(max_round=10, max_pop_size=500)
     print('\n=====Generated Summary=====')
     print(summary)
