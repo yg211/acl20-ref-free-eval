@@ -14,12 +14,13 @@ from utils.evaluator import evaluate_summary_rouge, add_result
 
 
 class GeneticSearcher():
-    def __init__(self, docs, max_sum_len, fitness_func, temperature=0.2, mutation_rate=0.2):
-        self.docs = docs
-        self.load_data(self.docs) 
+    def __init__(self, fitness_func, max_sum_len=100, max_round=10, max_pop_size=500, temperature=0.2, mutation_rate=0.2):
         self.max_sum_len = max_sum_len
         self.temperature = temperature
         self.mutation_rate = mutation_rate
+        self.max_round = max_round
+        self.max_pop_size = max_pop_size
+
         self.fitness_func = fitness_func
 
     def load_data(self, docs):
@@ -132,11 +133,12 @@ class GeneticSearcher():
         return new_pool, new_scores
 
 
-    def search(self, max_round, max_pop_size):
-        pool = self.init_pool(max_pop_size)
+    def summarize(self, docs):
+        self.load_data(docs) 
+        pool = self.init_pool(self.max_pop_size)
         scores = self.fitness_func(pool)
 
-        for i in tqdm(range(max_round)):
+        for i in tqdm(range(self.max_round)):
             pool, scores = self.round_search(pool, scores)
             print('round {}, max fitness {:.3f}, median fitness {:.3f}'.format(i, np.max(scores), np.median(scores)))
 
@@ -152,8 +154,8 @@ if __name__ == '__main__':
 
     # generate summaries using genetic algorithm, with supert as fitness function
     supert = Supert(source_docs)
-    summarizer = GeneticSearcher(source_docs, max_sum_len=100, fitness_func=supert)
-    summary = summarizer.search(max_round=10, max_pop_size=500)
+    summarizer = GeneticSearcher(fitness_func=supert, max_sum_len=100)
+    summary = summarizer.summarize(source_docs)
     print('\n=====Generated Summary=====')
     print(summary)
 
