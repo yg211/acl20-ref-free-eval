@@ -74,8 +74,8 @@ mv ROUGE-RELEASE-1.5.5 rouge/
 ```
 
 ## Reproduce the results in the paper
-* Branch **compare\_metrics** provides the code for reproducing the results in Tables 1 - 4. 
-* Branch **tac\_summarisation** provides the code for reproducing the results in Table 5.
+* Branch [**compare\_metrics**](https://github.com/yg211/acl20-ref-free-eval/tree/compare_metrics) provides the code for reproducing the results in Tables 1 - 4. 
+* Branch [**tac\_summarisation**](https://github.com/yg211/acl20-ref-free-eval/tree/tac_summarisation) provides the code for reproducing the results in Table 5.
 
 ## License
 Apache License Version 2.0
