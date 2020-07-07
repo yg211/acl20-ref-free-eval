@@ -73,5 +73,9 @@ pip3 install -r requirements.txt
 mv ROUGE-RELEASE-1.5.5 rouge/
 ```
 
+## Reproduce the results in the paper
+* Branch **compare\_metrics** provides the code for reproducing the results in Tables 1 - 4. 
+* Branch **tac\_summarisation** provides the code for reproducing the results in Table 5.
+
 ## License
 Apache License Version 2.0
