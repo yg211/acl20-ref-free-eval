@@ -5,9 +5,8 @@ sys.path.append(os.path.abspath('..'))
 sys.path.append(os.path.abspath('./'))
 
 from summariser.ngram_vector.state_type import State
-#from summariser.utils.summary_samples_reader import *
-from utils.misc import softmax_sample, normaliseList
 from summariser.ngram_vector.vector_generator import Vectoriser
+from utils.misc import softmax_sample, normaliseList
 
 import numpy as np
 import random
