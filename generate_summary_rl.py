@@ -1,17 +1,15 @@
 import sys
-sys.path.append('../')
-import numpy as np
-import os
-
+from resources import BASE_DIR, LANGUAGE
+from utils.corpus_reader import CorpusReader
 from ref_free_metrics.supert import Supert
+from summariser.ntd_summariser import DeepTDAgent
 from summariser.ngram_vector.vector_generator import Vectoriser
-from summariser.deep_td import DeepTDAgent as RLAgent
-from utils.data_reader import CorpusReader
 from utils.evaluator import evaluate_summary_rouge, add_result
+import numpy as np
 
 
-class RLSummarizer():
-    def __init__(self,reward_func, reward_strict=5.,rl_strict=5.,train_episode=5000, base_length=200, sample_summ_num=5000):
+class RLSummariser():
+    def __init__(self,reward_func, reward_strict=5.,rl_strict=5.,train_episode=5000, base_length=200, sample_summ_num=10000):
         self.reward_func = reward_func
         self.reward_strict = reward_strict
         self.rl_strict = rl_strict
@@ -26,35 +24,47 @@ class RLSummarizer():
         assert len(summary_list) == len(rewards)
         return summary_list, rewards
 
-    def summarize(self, docs, summ_max_len=100):
+    def summarise(self, docs, summ_max_len=100):
         # generate sample summaries for memory replay
         summaries, rewards = self.get_sample_summaries(docs, summ_max_len)
         vec = Vectoriser(docs,base=self.base_length)
-        rl_agent = RLAgent(vec, summaries, strict_para=self.rl_strict, train_round=self.train_episode)
+        rl_agent = DeepTDAgent(vec, summaries, strict_para=self.rl_strict, train_round=self.train_episode)
         summary = rl_agent(rewards)
         return summary
 
 
+
 if __name__ == '__main__':
-    # read source documents
-    reader = CorpusReader('data/topic_1')
-    source_docs = reader()
+    year = sys.argv[1]
+    #year = '08' # '08' or '09'
+    corpus_reader = CorpusReader(BASE_DIR)
 
-    # generate summaries, with summary max length 100 tokens
-    supert = Supert(source_docs)
-    rl_summarizer = RLSummarizer(reward_func = supert)
-    summary = rl_summarizer.summarize(source_docs, summ_max_len=100)
-    print('\n=====Generated Summary=====')
-    print(summary)
+    all_results = {}
+    topic_cnt = 0
 
-    # (Optional) Evaluate the quality of the summary using ROUGE metrics
-    if os.path.isdir('./rouge/ROUGE-RELEASE-1.5.5'):
-        refs = reader.readReferences() # make sure you have put the references in data/topic_1/references
-        avg_rouge_score = {}
+    for topic,docs,refs in corpus_reader(year):
+        if '.B' in topic: continue
+        print('\n=====Topic {}====='.format(topic))
+        topic_cnt += 1
+        supert = Supert(docs)
+        rl_summariser = RLSummariser(reward_func = supert)
+        summary = rl_summariser.summarise(docs, summ_max_len=100)
+        print(summary)
+        topic_results = {}
+
         for ref in refs:
             rouge_scores = evaluate_summary_rouge(summary, ref)
-            add_result(avg_rouge_score, rouge_scores)
-        print('\n=====ROUGE scores against {} references====='.format(len(refs)))
-        for metric in avg_rouge_score:
-            print('{}:\t{}'.format(metric, np.mean(rouge_scores[metric])))
+            add_result(topic_results, rouge_scores)
+            add_result(all_results, rouge_scores)
+
+        for metric in topic_results:
+            print('{} : {:.4f}'.format(metric, np.mean(topic_results[metric])))
+
+    print('\n=====Average results over {} topics====='.format(topic_cnt))
+    for metric in all_results:
+        print('{} : {:.4f}'.format(metric, np.mean(all_results[metric])))
+
+
+
+
 

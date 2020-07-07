@@ -1,3 +1,6 @@
+import sys
+sys.path.append('../')
+
 from rouge.rouge import Rouge
 from resources import *
 from collections import OrderedDict
