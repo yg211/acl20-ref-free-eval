@@ -11,13 +11,14 @@ from utils.evaluator import evaluate_summary_rouge, add_result
 
 
 class RLSummarizer():
-    def __init__(self,reward_func, reward_strict=5.,rl_strict=5.,train_episode=5000, base_length=200, sample_summ_num=5000):
+    def __init__(self,reward_func, reward_strict=5.,rl_strict=5.,train_episode=5000, base_length=200, sample_summ_num=5000, gpu=True):
         self.reward_func = reward_func
         self.reward_strict = reward_strict
         self.rl_strict = rl_strict
         self.train_episode = train_episode
         self.base_length = base_length
         self.sample_summ_num = sample_summ_num
+        self.gpu = gpu
 
     def get_sample_summaries(self, docs, summ_max_len=100):
         vec = Vectoriser(docs,summ_max_len)
@@ -30,7 +31,7 @@ class RLSummarizer():
         # generate sample summaries for memory replay
         summaries, rewards = self.get_sample_summaries(docs, summ_max_len)
         vec = Vectoriser(docs,base=self.base_length)
-        rl_agent = RLAgent(vec, summaries, strict_para=self.rl_strict, train_round=self.train_episode)
+        rl_agent = RLAgent(vec, summaries, strict_para=self.rl_strict, train_round=self.train_episode, gpu=self.gpu)
         summary = rl_agent(rewards)
         return summary
 

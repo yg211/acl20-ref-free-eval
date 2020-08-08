@@ -18,7 +18,7 @@ from torch.autograd import Variable
 
 
 class DeepTDAgent:
-    def __init__(self, vectoriser, summaries, train_round=5000, strict_para=3):
+    def __init__(self, vectoriser, summaries, train_round=5000, strict_para=3, gpu=True):
 
         # hyper parameters
         self.gamma = 1.
@@ -37,6 +37,7 @@ class DeepTDAgent:
 
         # deep training
         self.hidden_layer_width = int(self.vectoriser.vec_length/2)
+        self.gpu = gpu
 
 
     def __call__(self,reward_list,normalise=True):
@@ -57,6 +58,7 @@ class DeepTDAgent:
             torch.nn.ReLU(),
             torch.nn.Linear(self.hidden_layer_width, 1),
         )
+        if self.gpu: self.deep_model.to('cuda')
         self.optimiser = torch.optim.Adam(self.deep_model.parameters())
 
         for ii in tqdm(range(int(self.train_round)), desc='neural-rl training episodes'):
@@ -168,6 +170,10 @@ class DeepTDAgent:
         #print('target var', target_variables)
 
         loss_fn = torch.nn.MSELoss()
+        if self.gpu:
+            value_variables = value_variables.to('cuda')
+            target_variables = target_variables.to('cuda')
+
         loss = loss_fn(value_variables,target_variables)
 
         self.optimiser.zero_grad()
