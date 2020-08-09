@@ -104,7 +104,8 @@ class DeepTDAgent:
             if act_id == 0:
                 current_state_vec = state.getSelfVector(self.vectoriser.top_ngrams_list, self.vectoriser.sentences)
                 vec_variable = Variable(torch.from_numpy(np.array(current_state_vec)).float())
-                terminate_reward = self.deep_model(vec_variable.unsqueeze(0)).data.numpy()[0][0]
+                if self.gpu: vec_variable = vec_variable.to('cuda')
+                terminate_reward = self.deep_model(vec_variable.unsqueeze(0)).data.cpu().numpy()[0][0]
 
             # otherwise, the reward is 0, and value-function can be computed using the weight
             else:
@@ -120,8 +121,9 @@ class DeepTDAgent:
         if len(vec_list) == 0: return 0
         # get action that results in highest values
         variable = Variable(torch.from_numpy(np.array(vec_list)).float())
+        if self.gpu: variable = variable.to('cuda')
         values = self.deep_model(variable)
-        values_list = values.data.numpy()
+        values_list = values.data.cpu().numpy()
         values_list = [v[0] for v in values_list]
         #print('vectors list: ')
         #for vv in str_vec_list:
@@ -159,9 +161,11 @@ class DeepTDAgent:
 
 
     def deepTrain(self, vec_list, last_reward):
-        value_variables = self.deep_model(Variable(torch.from_numpy(np.array(vec_list)).float()))
+        vecs = Variable(torch.from_numpy(np.array(vec_list)).float())
+        if self.gpu: vecs = vecs.to('cuda')
+        value_variables = self.deep_model(vecs)
         #print('value var', value_variables)
-        value_list = value_variables.data.numpy()
+        value_list = value_variables.data.cpu().numpy()
         target_list = []
         for idx in range(len(value_list)-1):
             target_list.append(self.gamma*value_list[idx+1][0])
@@ -171,7 +175,7 @@ class DeepTDAgent:
 
         loss_fn = torch.nn.MSELoss()
         if self.gpu:
-            value_variables = value_variables.to('cuda')
+            #value_variables = value_variables.to('cuda')
             target_variables = target_variables.to('cuda')
 
         loss = loss_fn(value_variables,target_variables)
