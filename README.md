@@ -40,9 +40,11 @@ by measuring their semantic similarity with the pseudo references.
 You can also use the unsupervised metrics as rewards to train a RL-based summarizer to generate summaries:
 
 ```python
+from generate_summary_rl import RLSummarizer
+
 # read source documents
-reader = CorpusReader()
-source_docs = reader('data/topic_1')
+reader = CorpusReader('data/topic_1')
+source_docs = reader()
 
 # generate summaries using reinforcement learning, with supert as reward function
 supert = Supert(source_docs)
