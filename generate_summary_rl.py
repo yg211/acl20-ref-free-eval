@@ -30,7 +30,7 @@ class RLSummarizer():
     def summarize(self, docs, summ_max_len=100):
         # generate sample summaries for memory replay
         summaries, rewards = self.get_sample_summaries(docs, summ_max_len)
-        vec = Vectoriser(docs,summ_max_len,base=self.base_length,)
+        vec = Vectoriser(docs, sum_len=summ_max_len, base=self.base_length,)
         rl_agent = RLAgent(vec, summaries, strict_para=self.rl_strict, train_round=self.train_episode, gpu=self.gpu)
         summary = rl_agent(rewards)
         return summary
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     # generate summaries, with summary max length 100 tokens
     supert = Supert(source_docs)
     rl_summarizer = RLSummarizer(reward_func = supert)
-    summary = rl_summarizer.summarize(source_docs, summ_max_len=50)
+    summary = rl_summarizer.summarize(source_docs, summ_max_len=100)
     print('\n=====Generated Summary=====')
     print(summary)
 
