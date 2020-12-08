@@ -1,6 +1,6 @@
 # SUPERT: Unsupervised Multi-Document Summarization Evaluation & Generation
 
-This project includes the source code for the paper [**SUPERT: Towards New Frontiers in Unsupervised Evaluation Metrics for Multi-Document Summarization**](https://www.aclweb.org/anthology/2020.acl-main.124.pdf), appear at ACL 2020.
+This project includes the source code for the paper [**SUPERT: Towards New Frontiers in Unsupervised Evaluation Metrics for Multi-Document Summarization**](https://www.aclweb.org/anthology/2020.acl-main.124.pdf), appearing at ACL 2020.
 
 **Highlighted Features**
 
