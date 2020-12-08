@@ -9,7 +9,9 @@ from utils.evaluator import evaluate_summary_rouge, add_result
 
 
 if __name__ == '__main__':
-    pseudo_ref = 'top15' # pseudo-ref strategy
+    # pseudo-ref strategy: 
+    # * top15 means the first 15 sentences from each input doc will be used to build the pseudo reference summary
+    pseudo_ref = 'top15' 
 
     # read source documents
     reader = CorpusReader('data/topic_1')
@@ -17,7 +19,7 @@ if __name__ == '__main__':
     summaries = reader.readSummaries()
 
     # get unsupervised metrics for the summaries
-    supert = Supert(source_docs) 
+    supert = Supert(source_docs, ref_metric=pseudo_ref) 
     scores = supert(summaries)
     print('unsupervised metrics\n', scores)
 
