@@ -1,6 +1,6 @@
 # SUPERT: Unsupervised Multi-Document Summarization Evaluation & Generation
 
-This project includes the source code for the paper [**SUPERT: Towards New Frontiers in Unsupervised Evaluation Metrics for Multi-Document Summarization**](https://arxiv.org/abs/2005.03724), to appear at ACL 2020.
+This project includes the source code for the paper [**SUPERT: Towards New Frontiers in Unsupervised Evaluation Metrics for Multi-Document Summarization**](https://www.aclweb.org/anthology/2020.acl-main.124.pdf), appear at ACL 2020.
 
 **Highlighted Features**
 
@@ -16,8 +16,8 @@ Don't hesitate to send us an e-mail or report an issue, if something is broken o
 
 ## Example Use Cases
 
-### Evaluate Summaries (*evaluate_summary.py*)
-Given the source documents and some to-be-evaluated summaries, you can produce the unsupervised metrics for the summaries with a few lines of code:
+### Evaluate Multi-Document Summaries (*evaluate_summary.py*)
+Given the source documents and some to-be-evaluated summaries, you can produce the unsupervised metrics for the summaries with the code below:
 
 ```python
 from ref_free_metrics.supert import Supert
@@ -29,15 +29,23 @@ source_docs = reader()
 summaries = reader.readSummaries() 
 
 # compute the Supert scores
-supert = Supert(source_docs) 
+supert = Supert(source_docs, ref_metric='top15') 
 scores = supert(summaries)
 ```
 In the example above, it extracts the top-15 sentences from each source document
 to build the *pseudo reference summaries*, and rate the summaries
 by measuring their semantic similarity with the pseudo references.
 
+### Evaluate Single-Document Summaries 
+You could use the same code for evaluating multi-doc summaries to rate single-doc summaries.
+In addition to that, you may consider using more sentences from the input doc to 
+build the pseudo reference, by replacing argument 'top15' in the above code by, e.g., 'top30',
+so as to use the first 30 (instead of 15) sentences to build the pseudo reference.
+
+
+
 ### Generate Summaries (*generate_summary_rl.py*) 
-You can also use the unsupervised metrics as rewards to train a RL-based summarizer to generate summaries:
+You can also use the unsupervised metrics as *rewards* to train a RL-based summarizer to generate summaries:
 
 ```python
 from generate_summary_rl import RLSummarizer

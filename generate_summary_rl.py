@@ -44,7 +44,7 @@ if __name__ == '__main__':
     # generate summaries, with summary max length 100 tokens
     supert = Supert(source_docs)
     rl_summarizer = RLSummarizer(reward_func = supert)
-    summary = rl_summarizer.summarize(source_docs, summ_max_len=100)
+    summary = rl_summarizer.summarize(source_docs, summ_max_len=50)
     print('\n=====Generated Summary=====')
     print(summary)
 
