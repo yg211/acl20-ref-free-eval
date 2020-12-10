@@ -42,6 +42,10 @@ In addition to that, you may consider using more sentences from the input doc to
 build the pseudo reference, by replacing argument 'top15' in the above code by, e.g., 'top30',
 so as to use the first 30 (instead of 15) sentences to build the pseudo reference.
 
+We study the influence of pseudo reference length on the performance of Supert 
+for single-doc summaries at [summ_eval](summ_eval/). We compare
+correlation between Supert and human ratings from the [SummEval](https://github.com/Yale-LILY/SummEval)
+dataset.
 
 
 ### Generate Summaries (*generate_summary_rl.py*) 
