@@ -11,7 +11,7 @@ jmespath==0.9.5
 joblib==0.14.1
 networkx==2.4
 nltk==3.5
-numpy==1.18.4
+numpy==1.22.0
 python-dateutil==2.8.1
 pytorch-transformers==1.2.0
 regex==2020.5.7
