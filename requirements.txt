@@ -8,7 +8,7 @@ docutils==0.15.2
 future==0.18.2
 idna==2.9
 jmespath==0.9.5
-joblib==0.14.1
+joblib==1.2.0
 networkx==2.4
 nltk==3.5
 numpy==1.18.4
